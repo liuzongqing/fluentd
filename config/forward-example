@@ -1,0 +1,44 @@
+<source>
+  type forward
+  port 65432
+</source>
+
+
+<match farm.nl.prod>
+  type funplus-s3
+  aws_key_id 
+  aws_sec_key 
+  s3_bucket com.funplusgame.bidata
+  s3_endpoint s3-us-west-2.amazonaws.com
+  path farm/nl/prod/
+  buffer_path /mnt/buffered/nl
+  use_timestamp true
+  data_separator TAB
+  time_slice_format %Y%m%d%H
+  time_slice_wait 10m
+  buffer_chunk_limit 256m
+</match>
+
+<match farm.nl.err>
+  type file
+  buffer_type file
+  buffer_path /mnt/tmp/td-agent-nl.err-buffered
+  flush_interval 1h
+  buffer_chunk_limit 1000g
+  path /mnt/farm.nl/err
+  time_slice_format %Y%m%d%H
+  time_format %Y%m%dT%H%M%S%z
+  utc
+</match>
+
+<match farm.nl.sys>
+  type file
+  buffer_type file
+  buffer_path /mnt/tmp/td-agent-nl.sys-buffered
+  flush_interval 1h
+  buffer_chunk_limit 1000g
+  path /mnt/farm.nl/sys
+  time_slice_format %Y%m%d%H
+  time_format %Y%m%dT%H%M%S%z
+  utc
+</match>

@@ -1,0 +1,12 @@
+<source>
+  type forward
+  port 65432
+</source>
+
+<match slot.**>
+        type rawexec
+        buffer_type file
+        buffer_path /tmp/fluentd_exec_*.buffer
+        flush_interval 5s
+        command /usr/sbin/filter_log -o /mnt/slot_data/count
+</match>

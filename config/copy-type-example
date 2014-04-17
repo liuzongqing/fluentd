@@ -1,0 +1,24 @@
+<source>
+  type forward
+  port 65432
+</source>
+
+<match slot.**>
+	type copy
+	<store>
+		type file
+		path /mnt/slot_data/data
+		time_slice_format %Y%m%d
+		time_slice_wait 2m
+		time_format %Y%m%dT%H%M%S%z
+		utc
+	</store>
+
+	<store>
+        	type rawexec
+        	buffer_type file
+        	buffer_path /tmp/fluentd_exec_*.buffer
+        	flush_interval 5s
+        	command /usr/sbin/filter_log -o /mnt/slot_data/count
+	</store>
+</match>

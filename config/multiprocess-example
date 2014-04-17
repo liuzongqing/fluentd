@@ -1,0 +1,277 @@
+
+# type multiprocess
+# /usr/lib64/fluent/ruby/bin/fluent-gem install fluent-plugin-multiprocess
+# http://docs.fluentd.org/articles/in_multiprocess
+
+==================================
+#/etc/td-agent/td-agent.conf
+
+<source>
+  type multiprocess
+
+  <process>
+    cmdline -c /etc/td-agent/config.d/de.conf
+    sleep_before_start 1s
+    sleep_before_shutdown 5s
+  </process>
+  <process>
+    cmdline -c /etc/td-agent/config.d/fr.conf
+    sleep_before_start 1s
+    sleep_before_shutdown 5s
+  </process>
+  <process>
+    cmdline -c /etc/td-agent/config.d/nl.conf
+    sleep_before_start 1s
+    sleep_before_shutdown 5s
+  </process>
+  <process>
+    cmdline -c /etc/td-agent/config.d/pl.conf
+    sleep_before_start 1s
+    sleep_before_shutdown 5s
+  </process>
+</source>
+
+==================================
+
+==================================
+#/etc/td-agent/config.d/pl.conf
+
+<source>
+  type forward
+  port 65431
+</source>
+
+<match farm.pl.prod>
+  type funplus-s3
+  aws_key_id 4A
+  aws_sec_key 
+  s3_bucket com.funplusgame.bidata
+  s3_endpoint s3-us-west-2.amazonaws.com
+  path farm/pl/prod/
+  buffer_path /mnt/buffered/pl
+  use_timestamp true
+  data_separator TAB
+  time_slice_format %Y%m%d%H
+  time_slice_wait 10m
+  buffer_chunk_limit 256m
+</match>
+
+<match farm.pl.err>
+  type file
+  buffer_type file
+  buffer_path /mnt/tmp/td-agent-pl.err-buffered
+  flush_interval 1h
+  buffer_chunk_limit 1000g
+  path /mnt/farm.pl/err
+  time_slice_format %Y%m%d%H
+  time_format %Y%m%dT%H%M%S%z
+  utc
+</match>
+
+<match farm.pl.sys>
+  type file
+  buffer_type file
+  buffer_path /mnt/tmp/td-agent-pl.sys-buffered
+  flush_interval 1h
+  buffer_chunk_limit 1000g
+  path /mnt/farm.pl/sys
+  time_slice_format %Y%m%d%H
+  time_format %Y%m%dT%H%M%S%z
+  utc
+</match>
+
+<match farm.pl.msg>
+  type file
+  buffer_type file
+  buffer_path /mnt/tmp/td-agent-pl.msg-buffered
+  flush_interval 1h
+  buffer_chunk_limit 1000g
+  path /mnt/farm.pl/msg
+  time_slice_format %Y%m%d%H
+  time_format %Y%m%dT%H%M%S%z
+  utc
+</match>
+==================================
+
+
+==================================
+#/etc/td-agent/config.d/nl.conf
+
+<source>
+  type forward
+  port 65432
+</source>
+
+<match farm.nl.prod>
+  type funplus-s3
+  aws_key_id 
+  aws_sec_key 
+  s3_bucket com.funplusgame.bidata
+  s3_endpoint s3-us-west-2.amazonaws.com
+  path farm/nl/prod/
+  buffer_path /mnt/buffered/nl
+  use_timestamp true
+  data_separator TAB
+  time_slice_format %Y%m%d%H
+  time_slice_wait 10m
+  buffer_chunk_limit 256m
+</match>
+
+<match farm.nl.err>
+  type file
+  buffer_type file
+  buffer_path /mnt/tmp/td-agent-nl.err-buffered
+  flush_interval 1h
+  buffer_chunk_limit 1000g
+  path /mnt/farm.nl/err
+  time_slice_format %Y%m%d%H
+  time_format %Y%m%dT%H%M%S%z
+  utc
+</match>
+
+<match farm.nl.sys>
+  type file
+  buffer_type file
+  buffer_path /mnt/tmp/td-agent-nl.sys-buffered
+  flush_interval 1h
+  buffer_chunk_limit 1000g
+  path /mnt/farm.nl/sys
+  time_slice_format %Y%m%d%H
+  time_format %Y%m%dT%H%M%S%z
+  utc
+</match>
+
+<match farm.nl.msg>
+  type file
+  buffer_type file
+  buffer_path /mnt/tmp/td-agent-nl.msg-buffered
+  flush_interval 1h
+  buffer_chunk_limit 1000g
+  path /mnt/farm.nl/msg
+  time_slice_format %Y%m%d%H
+  time_format %Y%m%dT%H%M%S%z
+  utc
+</match>
+==================================
+
+==================================
+#/etc/td-agent/config.d/de.conf
+
+<source>
+  type forward
+  port 65433
+</source>
+
+<match farm.de.prod>
+  type funplus-s3
+  aws_key_id 
+  aws_sec_key 
+  s3_bucket com.funplusgame.bidata
+  s3_endpoint s3-us-west-2.amazonaws.com
+  path farm/de/prod/
+  buffer_path /mnt/buffered/de
+  use_timestamp true
+  data_separator TAB
+  time_slice_format %Y%m%d%H
+  time_slice_wait 10m
+  buffer_chunk_limit 256m
+</match>
+
+<match farm.de.err>
+  type file
+  buffer_type file
+  buffer_path /mnt/tmp/td-agent-de.err-buffered
+  flush_interval 1h
+  buffer_chunk_limit 1000g
+  path /mnt/farm.de/err
+  time_slice_format %Y%m%d%H
+  time_format %Y%m%dT%H%M%S%z
+  utc
+</match>
+
+<match farm.de.sys>
+  type file
+  buffer_type file
+  buffer_path /mnt/tmp/td-agent-de.sys-buffered
+  flush_interval 1h
+  buffer_chunk_limit 1000g
+  path /mnt/farm.de/sys
+  time_slice_format %Y%m%d%H
+  time_format %Y%m%dT%H%M%S%z
+  utc
+</match>
+
+<match farm.de.msg>
+  type file
+  buffer_type file
+  buffer_path /mnt/tmp/td-agent-de.msg-buffered
+  flush_interval 1h
+  buffer_chunk_limit 1000g
+  path /mnt/farm.de/msg
+  time_slice_format %Y%m%d%H
+  time_format %Y%m%dT%H%M%S%z
+  utc
+</match>
+==================================
+
+
+==================================
+#/etc/td-agent/config.d/fr.conf
+
+
+<source>
+  type forward
+  port 65434
+</source>
+
+<match farm.fr.prod>
+  type funplus-s3
+  aws_key_id 4A
+  aws_sec_key 
+  s3_bucket com.funplusgame.bidata
+  s3_endpoint s3-us-west-2.amazonaws.com
+  path farm/fr/prod/
+  buffer_path /mnt/buffered/fr
+  use_timestamp true
+  data_separator TAB
+  time_slice_format %Y%m%d%H
+  time_slice_wait 10m
+  buffer_chunk_limit 256m
+</match>
+
+<match farm.fr.err>
+  type file
+  buffer_type file
+  buffer_path /mnt/tmp/td-agent-fr.err-buffered
+  flush_interval 1h
+  buffer_chunk_limit 1000g
+  path /mnt/farm.fr/err
+  time_slice_format %Y%m%d%H
+  time_format %Y%m%dT%H%M%S%z
+  utc
+</match>
+
+<match farm.fr.sys>
+  type file
+  buffer_type file
+  buffer_path /mnt/tmp/td-agent-fr.sys-buffered
+  flush_interval 1h
+  buffer_chunk_limit 1000g
+  path /mnt/farm.fr/sys
+  time_slice_format %Y%m%d%H
+  time_format %Y%m%dT%H%M%S%z
+  utc
+</match>
+
+<match farm.fr.msg>
+  type file
+  buffer_type file
+  buffer_path /mnt/tmp/td-agent-fr.msg-buffered
+  flush_interval 1h
+  buffer_chunk_limit 1000g
+  path /mnt/farm.fr/msg
+  time_slice_format %Y%m%d%H
+  time_format %Y%m%dT%H%M%S%z
+  utc
+</match>
+==================================
