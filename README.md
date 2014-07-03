@@ -4,7 +4,9 @@ fluentd
 for fluentd(td-agent)
 
 export GEM_HOME="/usr/lib64/fluent/ruby/lib/ruby/gems/1.9.1/"
+
 export GEM_PATH="/usr/lib64/fluent/ruby/lib/ruby/gems/1.9.1/"
+
 /usr/lib64/fluent/ruby/bin/fluent-gem sources --add http://rubygems.org/
 
 =======
