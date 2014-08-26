@@ -4,11 +4,17 @@ fluentd
 yum install td-agent on centos(required libyaml td-libyaml)
 
 cat >/etc/yum.repos.d/td.repo <<'EOF';
+
 [treasuredata]
+
 name=TreasureData
+
 baseurl=http://packages.treasuredata.com/redhat/\$basearch
+
 gpgcheck=1
+
 gpgkey=http://packages.treasuredata.com/GPG-KEY-td-agent
+
 EOF
 
 yum install td-agent
